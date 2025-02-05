@@ -1,0 +1,29 @@
+
+@font-face {
+    font-family: 'shopify_sans_webbold';
+    src: url('shopify_sans_web_bold_regular-webfont.woff2') format('woff2'),
+         url('shopify_sans_web_bold_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'shopify_sans_webmedium';
+    src: url('shopify_sans_web_medium_regular-webfont.woff2') format('woff2'),
+         url('shopify_sans_web_medium_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'shopify_sans_webregular';
+    src: url('shopify_sans_web_regular_regular-webfont.woff2') format('woff2'),
+         url('shopify_sans_web_regular_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

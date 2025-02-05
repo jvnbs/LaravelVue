@@ -1,0 +1,226 @@
+.get_list_page{
+	max-width: 650px;
+	margin: auto;
+	margin-top: 60px;
+	margin-bottom: 100px;
+}
+.get_list_page h1{
+	color: rgba(26, 27, 41, 1);
+	font-size: 28px;
+	font-weight: 500;
+	margin-bottom: 40px;
+}
+.Add_Company_form label{
+	color: rgba(26, 27, 41, 0.8);
+	font-size: 14px;
+	font-weight: 400;
+	display: block;
+	margin-bottom: 6px;
+}
+.Add_Company_form .form_data{
+	margin-bottom: 22px;
+}
+.Add_Company_form input{
+	border: 1px solid rgba(26, 27, 41, 0.2);
+	color: rgba(26, 27, 41, 0.6);
+	font-size: 14px;
+	padding: 8px 15px;
+	font-weight: 400;
+	border-radius: 4px;
+	width: 100%;
+	outline: 0;
+}
+.Add_Company_form select{
+	border: 1px solid rgba(26, 27, 41, 0.2);
+	color: rgba(26, 27, 41, 0.6);
+	font-size: 14px;
+	padding: 8px 15px;
+	font-weight: 400;
+	border-radius: 4px;
+	width: 100%;
+	outline: 0;
+	box-shadow: none;
+}
+.Add_Company_form select:focus{
+	box-shadow: none;
+	outline: 0;
+	border: 1px solid rgba(26, 27, 41, 0.2);
+
+}
+.Add_Company_form .Create_btn{
+	margin-top: 45px;
+}
+.Add_Company_form .Create_btn a{
+	background: rgba(7, 16, 99, 1);
+	border-radius: 4px;
+	padding: 10px 28px;
+	color: rgba(255, 255, 255, 1);
+	font-weight: 400;
+	font-size: 14px;
+	width: max-content;
+	display: block;
+
+}
+
+/*..........company-details.............*/
+.company_details{
+	max-width: 970px;
+	margin: auto;
+	margin-top: 60px;
+	margin-bottom: 100px;
+}
+
+.company_data{
+	border: 1px solid rgba(26, 27, 41, 0.15);
+	background-color: white;
+    border-radius: 8px;
+    padding: 20px 20px 20px;
+}
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: auto;
+    margin-bottom: 50px;
+
+}
+.progress-steps .step{
+	position: relative;
+	width: 170px;
+}
+.progress-steps .step:before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 120px;
+    width: 140px;
+    height: 1px;
+    background: rgba(7, 16, 99, 0.25);
+}
+.progress-steps .step:last-child:before {
+	display: none;
+}
+.step{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.step p{
+	text-align: center;
+	width: 100%;
+	margin-top: 24px;
+	margin-bottom: 0;
+	font-size: 16px;
+}
+
+.step span{
+	width: 50px;
+    height: 50px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 50px;
+    background-color: rgba(7, 16, 99, 0.25);
+    cursor: pointer;
+    display: block;
+    color: rgba(26, 27, 41, 1);
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.back_next_btn{
+	margin: auto;
+    max-width: max-content;
+    margin-top: 60px;
+}
+.back_next_btn .back-btn{
+	 background: rgba(26, 27, 41, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 28px;
+    margin: 0;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.back_next_btn .next-btn{
+	 background: rgba(7, 16, 99, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 28px;
+    margin: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.step.active span {
+    background-color: rgba(59, 91, 226, 1);
+    color: white;
+}
+
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.company_data .Profile{
+	margin-top: 0;
+}
+
+.location-heading h2{
+	font-weight: 500;
+	font-size: 28px;
+}
+.Industries{
+	border: 0;
+	padding-bottom: 0;
+}
+.company_data .service_focus h2{
+	font-weight: 500;
+    font-size: 28px;
+}
+
+
+
+@media (max-width: 991px){
+    .Locations-form .form_1{
+        width: 100%;
+    }
+    .progress-steps .step:before{
+    	width: 120px;
+    	left: 120px;
+    }
+
+}
+@media (max-width: 767px){
+	.progress-steps .step:before{
+		display: none;
+	}
+	.step span{
+		width: 45px;
+	    height: 45px;
+	    font-size: 16px;
+	}
+	.step p {
+    margin-top: 15px;
+    font-size: 14px;
+}
+.company_data .Locations-form .form_1 span{
+	font-size: 9px;
+}
+.company_data .Update_Technologies ul li {
+    width: 100%;
+}
+.get_list_page{
+	margin-top: 40px;
+}
+
+}
