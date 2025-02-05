@@ -17,7 +17,6 @@
       <link rel="stylesheet" href="{{ asset('front/css/listing_style.css') }}">
       <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
-
       @vite('resources/js/app.js')
 </head>
 
