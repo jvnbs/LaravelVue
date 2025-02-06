@@ -157,16 +157,6 @@
                                                 </div>
                                                 <p>
                                                     Welcome to Cubix! We are
-                                                    excited to see you on our
-                                                    profile. Cubix is a leading
-                                                    mobile app, games, and
-                                                    enterprise software
-                                                    development company! –
-                                                    expert in developing,
-                                                    customizing, and integrating
-                                                    complex enterprise-level
-                                                    solutions, business
-                                                    intelligence analytics, and
                                                     advanced web and mobile
                                                     solutions. With... read more
                                                     about ItBizHub
@@ -474,6 +464,81 @@
     </body>
 </template>
 
-<script setup>
+
+<script>
+import Loader from "../components/Loader.vue";
 import Sidebar from "../components/Sidebar.vue";
+
+export default {
+    components: {
+        Sidebar,
+        Loader
+    },
+    data() {
+        return {
+            favorites: [],
+            loading: true,
+            currentPage: 1,
+            perPage: 5
+        };
+    },
+    computed: {
+        totalPages() {
+            return Math.ceil(this.favorites.length / this.perPage);
+        },
+        startIndex() {
+            return (this.currentPage - 1) * this.perPage;
+        },
+        endIndex() {
+            return Math.min(this.startIndex + this.perPage, this.favorites.length);
+        },
+        paginatedFavorites() {
+            return this.favorites.slice(this.startIndex, this.endIndex);
+        }
+    },
+    async mounted() {
+        await this.fetchFavorites();
+    },
+    methods: {
+        async fetchFavorites() {
+            try {
+                const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=20");
+                if (!response.ok) throw new Error("Failed to fetch favorites");
+
+                const data = await response.json();
+                this.favorites = data.map(ticket => ({
+                    id: ticket.id,
+                    title: ticket.title,
+                    date: new Date().toLocaleDateString(),
+                    updatedAt: new Date().toLocaleString()
+                }));
+            } catch (error) {
+                console.error("Error fetching favorites:", error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        deleteTicket(favoriteId) {
+            this.favorites = this.favorites.filter(ticket => ticket.id !== favoriteId);
+            if (this.favorites.length > 0 && this.currentPage > this.totalPages) {
+                this.currentPage = this.totalPages; // Adjust page if last item deleted
+            }
+        },
+        goToPage(page) {
+            if (page >= 1 && page <= this.totalPages) {
+                this.currentPage = page;
+            }
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        }
+    }
+};
 </script>

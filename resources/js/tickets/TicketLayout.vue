@@ -327,6 +327,31 @@ input.reply_file {
     overflow-y: auto;
     max-height: 405px;
 }
+
+button.ticket_from_button {
+    background: #090942;
+    color: white;
+    margin: 0px;
+    /* padding: 0px; */
+    padding-left: 12px;
+    padding-right: 12px;
+    /* padding: 7px; */
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 20px;
+    border: 0px;
+    border-radius: 20px;
+}
+
+label.ticketFormLabel {
+    font-size: 15px;
+    margin: 5px;
+}
+.ticket_category_inner_box.active {
+    /* background: aliceblue; */
+    background: linear-gradient(121.69deg, rgba(51, 243, 189, 0.35) 0%, rgba(59, 91, 226, 0.35) 100%);
+}
+
 </style>
 
 <script>

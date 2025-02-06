@@ -22,10 +22,11 @@ import Favorite from './dashboard/Favorite.vue';
 import Setting from './dashboard/Setting.vue';
 import Security from './dashboard/Security.vue';
 
-import TicketLayout from './dashboard/TicketLayout.vue';
-import TicketList from './dashboard/Ticket.vue';
-import TicketCreate from './components/TicketCreate.vue';
-import TicketDetail from './components/TicketDetail.vue';
+import TicketLayout from './tickets/TicketLayout.vue';
+import TicketList from './tickets/Ticket.vue';
+import TicketCreate from './tickets/TicketCreate.vue';
+import TicketDetail from './tickets/TicketDetail.vue';
+
 import BlogDetail from './pages/BlogDetail.vue';
 import NewsDetail from './pages/NewsDetail.vue';
 

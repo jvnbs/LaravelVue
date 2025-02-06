@@ -33,40 +33,6 @@
 
       <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-      <script>
-            var typing = new Typed(".textUpdate", {
-                  strings: ["", "Software Development Company", "Web Development Company",
-                        "Ecommerce Development Company", "Mobile App Development Company",
-                        "Digital Marketing Company"
-                  ],
-                  typeSpeed: 80,
-                  backSpeed: 40,
-                  loop: true,
-            });
-      </script>
-
-
-      <script type="text/javascript">
-            $(document).ready(function () {
-                  var availableTags = [
-                        "Graphic Design",
-                        "Logo Design",
-                        "Wordpress",
-                        "Drupal",
-                        "Shopify",
-                        "App Development"
-                  ];
-
-                  $("#form1").autocomplete({
-                        source: availableTags,
-                        minLength: 0
-                  }).on("focus", function () {
-                        $(this).autocomplete("search", "");
-                  });
-            });
-      </script>
-
 </body>
 
 </html>
