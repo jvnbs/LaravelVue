@@ -10,12 +10,12 @@ import Faq from './pages/Faq.vue';
 import Testimonial from './pages/Testimonial.vue';
 import TermsCondition from './pages/TermsCondition.vue';
 import PrivacyPolicy from './pages/PrivacyPolicy.vue';
-
 import NotFound from './pages/NotFound.vue';
 
 import SignIn from './auth/SignIn.vue';
 import SignUp from './auth/SignUp.vue';
 
+import DashboardLayout from './dashboard/DashboardLayout.vue';
 import Dashboard from './dashboard/Dashboard.vue';
 import Review from './dashboard/Review.vue';
 import Favorite from './dashboard/Favorite.vue';
@@ -31,38 +31,46 @@ import BlogDetail from './pages/BlogDetail.vue';
 import NewsDetail from './pages/NewsDetail.vue';
 
 const routes = [
-    { path: '/sign-up', component: SignUp },
-    { path: '/sign-in', component: SignIn },
+    { path: '/sign-up', name: 'SignUp', component: SignUp },
+    { path: '/sign-in', name: 'SignIn', component: SignIn },
 
-    { path: '/', component: Home },
-    { path: '/about', component: About },
-    { path: '/blogs', component: Blog },
-    { path: '/blog-detail/:id', component: BlogDetail }, 
-    { path: '/news', component: News },
-    { path: '/news-detail/:id', component: NewsDetail }, 
-    { path: '/contact-us', component: Contact },
-    { path: '/faq', component: Faq },
-    { path: '/testimonials', component: Testimonial },
-    { path: '/terms-conditions', component: TermsCondition },
-    { path: '/privacy-policy', component: PrivacyPolicy },
+    { path: '/', name: 'Home', component: Home },
+    { path: '/about', name: 'About', component: About },
+    { path: '/blogs', name: 'Blogs', component: Blog },
+    { path: '/blog-detail/:id', name: 'BlogDetail', component: BlogDetail, props: true }, 
+    { path: '/news', name: 'News', component: News },
+    { path: '/news-detail/:id', name: 'NewsDetail', component: NewsDetail, props: true }, 
+    { path: '/contact-us', name: 'Contact', component: Contact },
+    { path: '/faq', name: 'Faq', component: Faq },
+    { path: '/testimonials', name: 'Testimonials', component: Testimonial },
+    { path: '/terms-conditions', name: 'TermsConditions', component: TermsCondition },
+    { path: '/privacy-policy', name: 'PrivacyPolicy', component: PrivacyPolicy },
 
-    { path: '/dashboard', component: Dashboard },
+    // Dashboard with nested routes
+    {
+        path: '/dashboard',
+        component: DashboardLayout,
+        children: [
+            { path: '', name: 'Dashboard', component: Dashboard },
+            { path: 'reviews', name: 'Reviews', component: Review },
+            { path: 'favorites', name: 'Favorite', component: Favorite },
+            { path: 'settings', name: 'Settings', component: Setting },
+            { path: 'security', name: 'Security', component: Security },
+        ]
+    },
+
+    // Tickets with nested routes
     {
         path: "/tickets",
-        component: TicketLayout, // Parent route
+        component: TicketLayout,
         children: [
-          { path: "", name: "TicketList", component: TicketList }, // Default child
+          { path: "", name: "TicketList", component: TicketList },
           { path: "create", name: "TicketCreate", component: TicketCreate },
-          { path: "detail/:id", name: "TicketDetail", component: TicketDetail },
-        //   { path: "update/:id", name: "TicketCreate", component: TicketCreate, props: true },
+          { path: "detail/:id", name: "TicketDetail", component: TicketDetail, props: true },
         ],
     },
-    { path: '/reviews', component: Review },
-    { path: '/favorite', component: Favorite },
-    { path: '/settings', component: Setting },
-    { path: '/security', component: Security },
 
-    { path: '/:pathMatch(.*)*', component: NotFound }, // Catch-all for 404
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ];
 
 const router = createRouter({

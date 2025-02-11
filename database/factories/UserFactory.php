@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'phone_number' => $this->faker->phoneNumber(),
             'gender' => $this->faker->randomElement(['Male', 'Female']),
             'date_of_birth' => $this->faker->date('Y-m-d', '2000-01-01'),
-            'password' => Hash::make(Str::random(12)),  // Random password
+            'password' => Hash::make("System@123"),  // Random password
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'remember_token' => Str::random(10),

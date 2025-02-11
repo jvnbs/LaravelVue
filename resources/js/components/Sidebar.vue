@@ -109,7 +109,7 @@
                     <router-link to="/tickets">Ticket</router-link>
                 </span>
             </li>
-            <li :class="{ active: route.path === '/favorite' }">
+            <li :class="{ active: route.path === '/dashboard/favorites' }">
                 <span class="nav-link">
                     <svg
                         width="17"
@@ -124,10 +124,10 @@
                             fill-opacity="0.8"
                         ></path>
                     </svg>
-                    <router-link to="/favorite">My Favorite</router-link>
+                    <router-link to="/dashboard/favorites">My Favorite</router-link>
                 </span>
             </li>
-            <li :class="{ active: route.path === '/reviews' }">
+            <li :class="{ active: route.path === '/dashboard/reviews' }">
                 <span class="nav-link">
                     <svg
                         width="16"
@@ -142,11 +142,11 @@
                             fill-opacity="0.8"
                         ></path>
                     </svg>
-                    <router-link to="/reviews">Reviews</router-link>
+                    <router-link to="/dashboard/reviews">Reviews</router-link>
                 </span>
             </li>
 
-            <li :class="{ active: route.path === '/settings' }">
+            <li :class="{ active: route.path === '/dashboard/settings' }">
                 <span class="nav-link">
                     <svg
                         width="14"
@@ -161,10 +161,10 @@
                             fill-opacity="0.8"
                         ></path>
                     </svg>
-                    <router-link to="/settings">Settings</router-link>
+                    <router-link to="/dashboard/settings">Settings</router-link>
                 </span>
             </li>
-            <li :class="{ active: route.path === '/security' }">
+            <li :class="{ active: route.path === '/dashboard/security' }">
                 <span class="nav-link">
                     <svg
                         width="15"
@@ -181,7 +181,7 @@
                             fill-opacity="0.8"
                         ></path>
                     </svg>
-                    <router-link to="/security">Security</router-link>
+                    <router-link to="/dashboard/security">Security</router-link>
                 </span>
             </li>
             <li class="">

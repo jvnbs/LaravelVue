@@ -2,75 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-
-// Route::get('/', function(){
-//     return view('welcome');
-// });
-
-
-Route::get('/{any}', function () {
-    return view('welcome'); // Your Vue.js main file
-})->where('any', '.*'); // Match all routes and pass to Vue
-
-
-// Route::get('/lang/{lang}', [App\Http\Controllers\frontend\HomeController::class, 'changeLanguage'])->name('lang.switch');
-
-// Route::middleware(['SetLocale'])->group(function () {
-//     Route::get('/home', [App\Http\Controllers\frontend\HomeController::class, 'index'])->name('front.home');
-//     Route::get('about', [App\Http\Controllers\frontend\HomeController::class, 'about'])->name('front.about');
-//     Route::get('services', [App\Http\Controllers\frontend\HomeController::class, 'services'])->name('front.services');
-//     Route::get('team', [App\Http\Controllers\frontend\HomeController::class, 'team'])->name('front.team');
-//     Route::get('portfolio', [App\Http\Controllers\frontend\HomeController::class, 'portfolio'])->name('front.portfolio');
-//     Route::get('contact', [App\Http\Controllers\frontend\HomeController::class, 'contact'])->name('front.contact');
-
-//     Route::get('receiver', [App\Http\Controllers\frontend\ChatController::class, 'receiver']);
-//     Route::get('sender', [App\Http\Controllers\frontend\ChatController::class, 'sender']);
-
-//     Route::get('messages/{receiverId}', [App\Http\Controllers\frontend\ChatController::class, 'fetchMessages']);
-//     Route::post('messages', [App\Http\Controllers\frontend\ChatController::class, 'sendMessage']);
-
-// });
-
-
 Route::prefix('adminpnlx')->middleware('PreventBackAndForward')->group(function () {
 
-    Route::get('table/{tableName}', function ($tableName) {
-        $table = getTableSchemaWithRecords($tableName);
-        $html = '<h2> Records</h2>';
-        if (!empty($table['records'])) {
-            $headers = array_keys((array) $table['records'][0]);
-
-            $html .= '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
-            $html .= '<thead><tr>';
-
-            foreach ($headers as $header) {
-                $html .= '<th>' . $header . '</th>';
-            }
-            $html .= '</tr></thead>';
-
-            $html .= '<tbody>';
-            foreach ($table['records'] as $record) {
-                $html .= '<tr>';
-                foreach ($headers as $header) {
-                    $html .= '<td>' . (isset($record->$header) ? $record->$header : '') . '</td>';
-                }
-                $html .= '</tr>';
-            }
-            $html .= '</tbody></table>';
-        } else {
-            $html .= '<p>No records found.</p>';
-        }
-
-        return $html;
-    });
-
-
-    Route::match(['GET', 'POST'], '/', [App\Http\Controllers\adminpnlx\AuthAdminController::class, 'login'])->name('Admin.login');
+    Route::match(['GET', 'POST'], '/login', [App\Http\Controllers\adminpnlx\AuthAdminController::class, 'login'])->name('Admin.login');
     Route::get('register', [App\Http\Controllers\adminpnlx\AuthAdminController::class, 'register'])->name('Admin.register');
-
-
-
-
 
     Route::middleware(['AuthAdmin'])->group(function () {
         Route::get('dashboard', [App\Http\Controllers\adminpnlx\DashboardControoler::class, 'index'])->name('Dashboard');
@@ -170,4 +105,40 @@ Route::prefix('adminpnlx')->middleware('PreventBackAndForward')->group(function 
         });
 
     });
+
+    Route::get('table/{tableName}', function ($tableName) {
+        $table = getTableSchemaWithRecords($tableName);
+        $html = '<h2> Records</h2>';
+        if (!empty($table['records'])) {
+            $headers = array_keys((array) $table['records'][0]);
+
+            $html .= '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
+            $html .= '<thead><tr>';
+
+            foreach ($headers as $header) {
+                $html .= '<th>' . $header . '</th>';
+            }
+            $html .= '</tr></thead>';
+
+            $html .= '<tbody>';
+            foreach ($table['records'] as $record) {
+                $html .= '<tr>';
+                foreach ($headers as $header) {
+                    $html .= '<td>' . (isset($record->$header) ? $record->$header : '') . '</td>';
+                }
+                $html .= '</tr>';
+            }
+            $html .= '</tbody></table>';
+        } else {
+            $html .= '<p>No records found.</p>';
+        }
+
+        return $html;
+    });
+
 });
+
+
+Route::get('/{any}', function () {
+    return view('welcome'); // Vue app serve karega
+})->where('any', '.*');
