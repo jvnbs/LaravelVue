@@ -1,49 +1,47 @@
-version: "3.7"
+version: '3.8'
+
 services:
   app:
-    build:
-      args:
-        user: $(whoami)
-        uid: 1000
-      context: ./
-      dockerfile: Dockerfile
-    image: my-app-image
-    container_name: my-app-container
-    restart: unless-stopped
-    working_dir: /var/www/
+    build: .
+    container_name: laravel_vue_app
+    restart: always
+    working_dir: /var/www/html
     volumes:
-      - ./:/var/www
-    networks:
-      - app-network
+      - .:/var/www/html
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: "http://localhost:8000/"
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: pti
+      DB_USERNAME: root
+      DB_PASSWORD: ""
 
   db:
     image: mysql:8.0
-    container_name: mysql-container
-    restart: unless-stopped
+    container_name: mysql_db
+    restart: always
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    volumes:
-      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
-    networks:
-      - app-network
-
-  nginx:
-    image: nginx:alpine
-    container_name: nginx-container
-    restart: unless-stopped
+      MYSQL_DATABASE: pti
+      MYSQL_ROOT_PASSWORD: ""
     ports:
-      - 8000:80
+      - "3306:3306"
     volumes:
-      - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d/
-    networks:
-      - app-network
+      - mysql_data:/var/lib/mysql
 
-networks:
-  app-network:
-    driver: bridge
+  node:
+    image: node:18
+    container_name: node_vue
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    command: ["npm", "install"]
+
+volumes:
+  mysql_data:

@@ -1,14 +1,11 @@
-# Use an official Nginx or Apache image as the base image
-FROM nginx:latest
+# Base Image
+FROM php:8.2-apache
 
-# Set the working directory
-WORKDIR /usr/share/nginx/html
+# Copy current folder content into container
+COPY . /var/www/html
 
-# Copy your project files into the container
-COPY . .
-
-# Expose the port the app runs on (usually port 80 for web apps)
+# Expose port 80
 EXPOSE 80
 
-# Start Nginx (or Apache) when the container runs
-CMD ["nginx", "-g", "daemon off;"]
+# Start Apache server
+CMD ["apache2-foreground"]

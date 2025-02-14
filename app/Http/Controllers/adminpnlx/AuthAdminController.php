@@ -73,7 +73,7 @@ class AuthAdminController extends Controller
         }
         if(Auth::guard('admin')->user())
         {
-            return back();
+            return redirect()->route('Dashboard');
         }
         return view('adminpnlx.auth.login');
     }

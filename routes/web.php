@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('adminpnlx')->middleware('PreventBackAndForward')->group(function () {
 
-    Route::match(['GET', 'POST'], '/login', [App\Http\Controllers\adminpnlx\AuthAdminController::class, 'login'])->name('Admin.login');
+    Route::match(['GET', 'POST'], '/', [App\Http\Controllers\adminpnlx\AuthAdminController::class, 'login'])->name('Admin.login');
     Route::get('register', [App\Http\Controllers\adminpnlx\AuthAdminController::class, 'register'])->name('Admin.register');
 
     Route::middleware(['AuthAdmin'])->group(function () {
