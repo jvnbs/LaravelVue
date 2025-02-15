@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 namespace App\Http\Middleware;
 
 use Closure;
@@ -11,20 +10,28 @@ class AuthApi
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized access. Please sign in to continue.'
-            ], 401);
+        if (auth('api')->check()) {
+            $user = auth('api')->user();
+            
+            if ($user->is_active != 1) {
+                auth('api')->logout();
+                return response()->json([
+                    'error' => 'Your account is inactive. Please contact support.'
+                ], 403);
+            }
+
+            if ($user->is_deleted != 0) {
+                auth('api')->logout();
+                return response()->json([
+                    'error' => 'Your account has been deleted.'
+                ], 403);
+            }
+
+            return $next($request);
         }
 
-        if (!Auth::guard('api')->check()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Session expired or invalid token. Please log in again.'
-            ], 401);
-        }
-
-        return $next($request);
+        return response()->json([
+            'error' => 'Unauthorized access. Please sign in to continue.'
+        ], 401);
     }
 }

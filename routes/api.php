@@ -24,9 +24,9 @@ Route::get('/news', [HomeController::class, 'news']);
 
 Route::middleware('AuthApi')->group(function () {
     Route::get('/blogs', [HomeController::class, 'blogs']);
+    Route::apiResource('/blogss',BlogController::class);
+    Route::apiResource('/newss',NewsController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
-    // Route::apiResource('/blogs',BlogController::class);
-    Route::apiResource('/news',NewsController::class);
 
 });
 

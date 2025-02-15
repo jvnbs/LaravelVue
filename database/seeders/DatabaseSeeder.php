@@ -1,26 +1,29 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Database\Seeders\AdminSeeder;
-use Database\Seeders\UserSeeder;
-use Database\Seeders\RoleSeeder;
-use Database\Seeders\PermissionSeeder;
-use Database\Seeders\AclSeeder;
-use Database\Seeders\AclActionSeeder; 
-use Database\Seeders\CategorySeeder;
-use Database\Seeders\ProductSeeder;
-use Database\Seeders\BannerSeeder; 
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+       public function run(): void
     {
-        // You can call individual seeders here
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        DB::table('acls')->truncate();
+        DB::table('acl_actions')->truncate();
+        DB::table('admins')->truncate();
+        DB::table('users')->truncate();
+        DB::table('roles')->truncate();
+        DB::table('permissions')->truncate();
+        DB::table('permission_actions')->truncate();
+        DB::table('categories')->truncate();
+        DB::table('products')->truncate();
+        DB::table('banners')->truncate();
+        DB::table('blogs')->truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         $this->call([
             AclSeeder::class,
             AclActionSeeder::class,
@@ -32,7 +35,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ProductSeeder::class,
             BannerSeeder::class,
-            BlogSeeder::class
+            BlogSeeder::class,
         ]);
     }
 }

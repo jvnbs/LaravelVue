@@ -65,29 +65,37 @@ class AuthController extends Controller
     
     
         public function login(Request $request)
-            {
-                $validator = Validator::make($request->all(), [
-                    'email' => 'required|email',
-                    'password' => 'required|min:6'
-                ]);
-
-                if ($validator->fails()) {
-                    return response()->json($validator->errors(), 400);
-                }
-
-                if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                    return response()->json(['error' => 'Unauthorized'], 401);
-                }
-
+        {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
+    
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 $user = Auth::user();
-                $token = $user->createToken('LaravelVueApp')->accessToken;
-
+    
+                // Check if user is active
+                if ($user->is_active != 1) {
+                    return response()->json(['error' => 'Your account is inactive.'], 403);
+                }
+    
+                // Check if user is deleted
+                if ($user->is_deleted != 0) {
+                    return response()->json(['error' => 'Your account has been deleted.'], 403);
+                }
+    
+                // Generate Token
+                $token = $user->createToken('API Token')->accessToken;
+    
                 return response()->json([
+                    'message' => 'Login successful',
                     'user' => $user,
-                    'access_token' => $token
+                    'token' => $token
                 ]);
             }
-
+    
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
     
 
 

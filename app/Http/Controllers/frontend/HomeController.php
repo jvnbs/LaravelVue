@@ -64,7 +64,7 @@ class HomeController extends Controller
 
         return ApiResponseClass::sendResponse(
             ModelResource::collection($data),
-            'Faq retrieved successfully',
+            'Blog retrieved successfully',
             200,
         );
     }
