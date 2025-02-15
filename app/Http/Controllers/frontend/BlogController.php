@@ -4,31 +4,31 @@ namespace App\Http\Controllers\frontend;
 
 use App\Classes\ApiResponseClass;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductResource;
-use App\Interfaces\ProductRepositoryInterface;
-use Illuminate\Http\Request;
+use App\Http\Resources\BlogResource;
+use App\Interfaces\BlogRepositoryInterface;
 use DB;
+use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class BlogController extends Controller
 {
-    private ProductRepositoryInterface $productRepositoryInterface;
-    public function __construct(ProductRepositoryInterface $productRepositoryInterface)
+    private BlogRepositoryInterface $BlogRepositoryInterface;
+    public function __construct(BlogRepositoryInterface $BlogRepositoryInterface)
     {
-        $this->productRepositoryInterface = $productRepositoryInterface;
+        $this->BlogRepositoryInterface = $BlogRepositoryInterface;
     }
 
 
     public function index()
     {
-        $data = $this->productRepositoryInterface->index();
+        $data = $this->BlogRepositoryInterface->index();
 
         if ($data->isEmpty()) {
-            return ApiResponseClass::sendResponse([], 'No products found', 404);
+            return ApiResponseClass::sendResponse([], 'No blog found', 404);
         }
 
         return ApiResponseClass::sendResponse(
-            ProductResource::collection($data),
-            'Products retrieved successfully',
+            BlogResource::collection($data),
+            'Blog retrieved successfully',
             200,
         );
     }
@@ -48,10 +48,10 @@ class ProductController extends Controller
         ];
         DB::beginTransaction();
         try {
-            $product = $this->productRepositoryInterface->store($details);
+            $blog = $this->BlogRepositoryInterface->store($details);
 
             DB::commit();
-            return ApiResponseClass::sendResponse(new ProductResource($product), 'Product Create Successful', 201);
+            return ApiResponseClass::sendResponse(new BlogResource($blog), 'Blog Create Successful', 201);
 
         } catch (\Exception $ex) {
             return ApiResponseClass::rollback($ex);
@@ -61,11 +61,11 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $data = $this->productRepositoryInterface->getById($id);
+        $data = $this->BlogRepositoryInterface->getById($id);
     
         return ApiResponseClass::sendResponse(
-            new ProductResource($data),
-            'Product fetch successfully',
+            new BlogResource($data),
+            'blog fetch successfully',
             200
         );
     }
@@ -85,10 +85,10 @@ class ProductController extends Controller
         ];
         DB::beginTransaction();
         try {
-            $product = $this->productRepositoryInterface->update($updateDetails, $id);
+            $blog = $this->BlogRepositoryInterface->update($updateDetails, $id);
 
             DB::commit();
-            return ApiResponseClass::sendResponse('Product Update Successful', '', 201);
+            return ApiResponseClass::sendResponse('Blog Update Successful', '', 201);
 
         } catch (\Exception $ex) {
             return ApiResponseClass::rollback($ex);
@@ -98,8 +98,8 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
-        $this->productRepositoryInterface->delete($id);
+        $this->BlogRepositoryInterface->delete($id);
 
-        return ApiResponseClass::sendResponse('Product Delete Successful', '', 204);
+        return ApiResponseClass::sendResponse('Blog Delete Successful', '', 204);
     }
 }

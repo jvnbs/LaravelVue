@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers\frontend;
 
+use App\Classes\ApiResponseClass;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\User;
-use Auth;
+use App\Http\Resources\ModelResource;
+use App\Interfaces\HomeRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use App\Models\Banner;
 use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
+
+    private HomeRepositoryInterface $HomeRepositoryInterface;
+    public function __construct(HomeRepositoryInterface $HomeRepositoryInterface)
+    {
+        $this->HomeRepositoryInterface = $HomeRepositoryInterface;
+    }
+
     public function changeLanguage(Request $request, $lang)
     {
         $defaultLang = "en";
@@ -33,75 +38,82 @@ class HomeController extends Controller
     }
 
 
-    public function index()
+    public function faqs()
     {
-        $banners = Banner::where('is_active', 1)->first();
-        return view('frontend.index', compact('banners'));
-    }
+        $data = $this->HomeRepositoryInterface->faqs();
 
-    public function services()
-    {
-        return view('frontend.services');
-    }
-public function getProduct()
-{
-    try {
-        $products = Product::where('is_deleted', 0)->get();
-
-        if ($products->isEmpty()) {
-            return response()->json([
-                'status' => 200,
-                'msg' => 'No products available',
-                'results' => []
-            ]);
+        if ($data->isEmpty()) {
+            return ApiResponseClass::sendResponse([], 'No blog found', 404);
         }
 
-        return response()->json([
-            'status' => 200,
-            'msg' => 'Products retrieved successfully',
-            'results' => $products
-        ]);
-    } catch (\Exception $e) {
-        Log::error('Error fetching products: ' . $e->getMessage());
-
-        return response()->json([
-            'status' => 500,
-            'msg' => 'Failed to retrieve products. Please try again later.'
-        ], 500);
+        return ApiResponseClass::sendResponse(
+            ModelResource::collection($data),
+            'Faq retrieved successfully',
+            200,
+        );
     }
-}
 
 
+    public function blogs()
+    {
+        $data = $this->HomeRepositoryInterface->faqs();
 
-public function getCategory()
-{
-    try {
-        $category = Category::where('parent_id', null)->get();
-
-        if ($category->isEmpty()) {
-            return response()->json([
-                'status' => 200,
-                'msg' => 'No category available',
-                'results' => []
-            ]);
+        if ($data->isEmpty()) {
+            return ApiResponseClass::sendResponse([], 'No blog found', 404);
         }
 
-        return response()->json([
-            'status' => 200,
-            'msg' => 'category retrieved successfully',
-            'results' => $category
-        ]);
-    } catch (\Exception $e) {
-        Log::error('Error fetching category: ' . $e->getMessage());
-
-        return response()->json([
-            'status' => 500,
-            'msg' => 'Failed to retrieve category. Please try again later.'
-        ], 500);
+        return ApiResponseClass::sendResponse(
+            ModelResource::collection($data),
+            'Faq retrieved successfully',
+            200,
+        );
     }
-}
 
-    
+
+    public function news()
+    {
+        $data = $this->HomeRepositoryInterface->faqs();
+
+        if ($data->isEmpty()) {
+            return ApiResponseClass::sendResponse([], 'No blog found', 404);
+        }
+
+        return ApiResponseClass::sendResponse(
+            ModelResource::collection($data),
+            'Faq retrieved successfully',
+            200,
+        );
+    }
+
+    public function categories()
+    {
+        $data = $this->HomeRepositoryInterface->categories();
+
+        if ($data->isEmpty()) {
+            return ApiResponseClass::sendResponse([], 'No blog found', 404);
+        }
+
+        return ApiResponseClass::sendResponse(
+            ModelResource::collection($data),
+            'Category retrieved successfully',
+            200,
+        );
+    }
+
+    public function products()
+    {
+        $data = $this->HomeRepositoryInterface->products();
+
+        if ($data->isEmpty()) {
+            return ApiResponseClass::sendResponse([], 'No blog found', 404);
+        }
+
+        return ApiResponseClass::sendResponse(
+            ModelResource::collection($data),
+            'Products retrieved successfully',
+            200,
+        );
+    }
 
 
 }

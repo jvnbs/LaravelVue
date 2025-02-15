@@ -2,98 +2,100 @@
 
 namespace App\Http\Controllers\frontend;
 
+use App\Classes\ApiResponseClass;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\adminpnlx\UserAddRequest;
+use App\Http\Resources\ModelResource;
+use App\Interfaces\AuthRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    // ✅ Register API
-
-    public function register(Request $request)
+    private AuthRepositoryInterface $AuthRepositoryInterface;
+    public function __construct(AuthRepositoryInterface $AuthRepositoryInterface)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password), // ✅ Ensure Password is Hashed
-        ]);
-
-        return response()->json(['message' => 'User registered successfully'], 201);
+        $this->AuthRepositoryInterface = $AuthRepositoryInterface;
     }
 
 
-    // ✅ Login API
-       
-    public function login(Request $request)
+    public function index()
     {
-        try {
-            // Log the login attempt
-            Log::info('Login attempt for email: ' . $request->email);
-    
-            // Validate request input
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
-    
-            // Attempt authentication
-            if (!Auth::attempt($request->only('email', 'password'))) {
-                Log::warning('Login failed for email: ' . $request->email);
-                return response()->json(['message' => 'Invalid credentials'], 401);
-            }
-    
-            // Retrieve authenticated user
-            $user = Auth::user();
-    
-            // Check if Passport is installed and generate token
-            if (!method_exists($user, 'createToken')) {
-                Log::error('Passport issue: createToken method not found for user ID: ' . $user->id);
-                return response()->json(['message' => 'OAuth issue: Passport may not be installed'], 500);
-            }
-    
-            $token = $user->createToken('MyApp')->accessToken;
-    
-            // Log successful login
-            Log::info('User logged in successfully: ' . $user->email);
-    
-            return response()->json([
-                'status' => 200,
-                'message' => 'Login successful',
-                'token' => $token,
-                'user' => $user
-            ], 200);
-            
-        } catch (\Exception $e) {
-            Log::error('Login error: ' . $e->getMessage());
-    
-            return response()->json([
-                'status' => 500,
-                'message' => 'An error occurred during login. Please try again later.'
-            ], 500);
+        $data = $this->AuthRepositoryInterface->index();
+
+        if ($data->isEmpty()) {
+            return ApiResponseClass::sendResponse([], 'No blog found', 404);
         }
+
+        return ApiResponseClass::sendResponse(
+            ModelResource::collection($data),
+            'Blog retrieved successfully',
+            200,
+        );
     }
+
+        public function register(UserAddRequest $request)
+        {
+            $details = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password), 
+            ];
+        
+            DB::beginTransaction();
+            try {
+                $user = $this->AuthRepositoryInterface->register($details);
+                DB::commit();
+                return ApiResponseClass::sendResponse(new ModelResource($user), 'Register Successful', 201);
+        
+            } catch (\Exception $ex) {
+                DB::rollback(); 
+                // return ApiResponseClass::sendError($ex->getMessage(), 500);
+                return response()->json(['message' => 'Password incorrect!'], 500);
+            }
+        }
+    
+    
+    
+    
+        public function login(Request $request)
+            {
+                $validator = Validator::make($request->all(), [
+                    'email' => 'required|email',
+                    'password' => 'required|min:6'
+                ]);
+
+                if ($validator->fails()) {
+                    return response()->json($validator->errors(), 400);
+                }
+
+                if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                    return response()->json(['error' => 'Unauthorized'], 401);
+                }
+
+                $user = Auth::user();
+                $token = $user->createToken('LaravelVueApp')->accessToken;
+
+                return response()->json([
+                    'user' => $user,
+                    'access_token' => $token
+                ]);
+            }
+
     
 
-    // ✅ Logout API
+
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
-        return response()->json(['message' => 'Logged out successfully']);
+        return response()->json(['message' => 'Successfully logged out']);
     }
 
-    // ✅ Get Authenticated User
-    public function user(Request $request)
-    {
-        return response()->json($request->user());
-    }
+    
 }

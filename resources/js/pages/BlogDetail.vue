@@ -53,11 +53,9 @@
                         <h2 class="text-center text-primary h4 font-weight-bold mb-5">
                             {{ blog?.title || "N/A" }}
                         </h2>
-                        <img
-                            src="https://demosrvr.com/ithub/public/backed/blogs/1738728960.jpg"
-                            alt="Blog Image"
+                        <img :src="blog.image" alt="Blog Image"
                             class="card-img-top img-fluid"
-                            style="width: 1200px; height: 600px; object-fit: cover;"
+                            style="width: 1200px; height: 500px; object-fit: cover;"
                         />
                         <p class="text-muted mb-4">
                             <small>Posted on Feb 05, 2025 |
@@ -65,7 +63,7 @@
                             </small>
                         </p>
                         <div class="blog-body">
-                            <p>{{ blog?.body || "No content available" }}</p>
+                            <p>{{ blog?.description || "No content available" }}</p>
                             <div class="cta-section mt-5 p-4 bg-light rounded border border-primary">
                                 <h5 class="text-primary">Interested in this topic?</h5>
                                 <p>
@@ -126,14 +124,17 @@ export default {
             try {
                 this.loading = true;
                 const response = await fetch(
-                    `https://jsonplaceholder.typicode.com/posts/${id}`
+                     `http://127.0.0.1:8000/api/blogs/${id}`
                 );
 
                 if (!response.ok) {
                     throw new Error("Failed to fetch blog details.");
                 }
 
-                this.blog = await response.json();
+                const result = await response.json();
+                this.blog = result.data;
+                console.log('response', response, result);
+                
             } catch (error) {
                 this.errorMessage = "Failed to load blog. Please try again.";
             } finally {

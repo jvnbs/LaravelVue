@@ -16,7 +16,6 @@ Route::prefix('adminpnlx')->middleware('PreventBackAndForward')->group(function 
 
         Route::middleware(['CheckPermission'])->group(function () {
 
-
             Route::get('acls', [App\Http\Controllers\adminpnlx\AclController::class, 'index'])->name('Acl.index');
             Route::get('acls/create', [App\Http\Controllers\adminpnlx\AclController::class, 'create'])->name('Acl.create');
             Route::post('acls/store', [App\Http\Controllers\adminpnlx\AclController::class, 'store'])->name('Acl.store');
@@ -101,6 +100,15 @@ Route::prefix('adminpnlx')->middleware('PreventBackAndForward')->group(function 
             Route::post('blogs/update/{id}', [App\Http\Controllers\adminpnlx\BlogController::class, 'update'])->name('Blog.update');
             Route::get('blogs/delete/{id}', [App\Http\Controllers\adminpnlx\BlogController::class, 'delete'])->name('Blog.delete');
             Route::get('blogs/status/{id}/{status}', [App\Http\Controllers\adminpnlx\BlogController::class, 'changeStatus'])->name('Blog.changeStatus');
+
+            Route::get('news', [App\Http\Controllers\adminpnlx\NewsController::class, 'index'])->name('News.index');
+            Route::get('news/create', [App\Http\Controllers\adminpnlx\NewsController::class, 'create'])->name('News.create');
+            Route::post('news/store', [App\Http\Controllers\adminpnlx\NewsController::class, 'store'])->name('News.store');
+            Route::get('news/view/{id}', [App\Http\Controllers\adminpnlx\NewsController::class, 'show'])->name('News.show');
+            Route::get('news/edit/{id}', [App\Http\Controllers\adminpnlx\NewsController::class, 'edit'])->name('News.edit');
+            Route::post('news/update/{id}', [App\Http\Controllers\adminpnlx\NewsController::class, 'update'])->name('News.update');
+            Route::get('news/delete/{id}', [App\Http\Controllers\adminpnlx\NewsController::class, 'delete'])->name('News.delete');
+            Route::get('news/status/{id}/{status}', [App\Http\Controllers\adminpnlx\NewsController::class, 'changeStatus'])->name('News.changeStatus');
 
         });
 

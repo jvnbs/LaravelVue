@@ -41,14 +41,15 @@ return [
             'provider' => 'users',
         ],
 
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admins',
-        ],
-
         'api' => [
             'driver' => 'passport',
             'provider' => 'users',
+        ],
+
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
         ],
 
     ],

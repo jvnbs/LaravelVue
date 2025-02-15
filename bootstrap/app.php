@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
           'AuthAdmin' => \App\Http\Middleware\AuthAdmin::class,
+          'AuthApi' => \App\Http\Middleware\AuthApi::class,
           'CheckPermission' => \App\Http\Middleware\CheckPermission::class,
           'PreventBackAndForward' => \App\Http\Middleware\PreventBackAndForward::class,
           'SetLocale' => \App\Http\Middleware\SetLocale::class,

@@ -44,18 +44,15 @@
                 <div class="col-md-4 mb-4" v-for="blog in blogs" :key="blog.id">
                     <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
                         <router-link :to="'/blog-detail/' + blog.id">
-                            <img
-                                src="http://192.168.100.31:9000/public/backed/blogs/1738409731.jpg"
-                                alt="Blog Image"
-                                class="card-img-top img-fluid"
-                                style="width: 420px; height: 300px; object-fit: cover;"
+                        <img :src="blog.image" alt="Blog Image" class="card-img-top img-fluid"
+                                style="width: 400px; height: 280px; object-fit: cover;"
                             />
                         </router-link>
                         <div class="card-body">
                             <h5 class="card-title text-primary font-weight-bold">
                                 {{ blog.title }}
                             </h5>
-                            <p class="card-text text-muted">Blog Description</p>
+                            <p class="card-text text-muted">{{ blog.description }}</p>
                             <router-link :to="'/blog-detail/' + blog.id" class="btn btn-info btn-sm">Read More</router-link>
                         </div>
                         <div class="card-footer text-muted text-end">
@@ -77,23 +74,32 @@ import Loader from '../components/Loader.vue';
 
 export default {
     components: {
-        Loader, // ✅ Register Loader Component
+        Loader,
     },
     data() {
         return {
-            blogs: [],  // ✅ Array for storing blogs
-            loading: true,  // ✅ Loading state
+            blogs: [],
+            loading: true,  
         };
     },
     async mounted() {
         await this.fetchBlogs();
     },
-    methods: {
+    
+     methods: {
         async fetchBlogs() {
             try {
-                const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=9");
-                const data = await response.json();
-                this.blogs = data;
+                const response = await fetch("http://127.0.0.1:8000/api/blogs");
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log('Fetched Blogs:', result.data); // ✅ Corrected log
+
+                this.blogs = result.data;
+                
             } catch (error) {
                 console.error("Error fetching blogs:", error);
             } finally {

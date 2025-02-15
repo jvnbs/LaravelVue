@@ -20,13 +20,12 @@
 <div class="description-page p-5">
     <div class="container">
         <div class="heading_Box">
-            <p class="section_box_desc text-muted">
-                                <span class="text-primary h4">Accusantium adipisci aut omnis laudantium odio cu</span>
-                                <br><br>
-                                <p>
+            <div class="section_box_desc text-muted">
+                    <span class="text-primary h4">Accusantium adipisci aut omnis laudantium odio cu</span>
+            <p>
                 Work with the best IT company talent from around the world. Our platform enables you to swiftly search and find the perfect service provider for your needs.
                 </p>
-                            </p>
+            </div>
         </div>
     </div>
 </div>
