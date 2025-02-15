@@ -89,6 +89,8 @@
     </div>
 </template>
 
+
+
 <script>
 export default {
     data() {
@@ -100,24 +102,24 @@ export default {
     methods: {
         async signIn() {
             try {
-                const response = await fetch("https://api.escuelajs.co/api/v1/auth/login", {
+                const response = await fetch("http://127.0.0.1:8000/api/login", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                     body: JSON.stringify({
-                        // email: this.email, // Use the user's email input
-                        // password: this.password, // Use the user's password input
-                        email: "john@mail.com",
-                        password: "changeme",
+                        email: this.email,
+                        password: this.password,
                     }),
-                    credentials: "include", // Include credentials if needed
+                    credentials: "include", // Ensure backend allows credentials
                 });
 
                 const data = await response.json();
-
+                
+                
                 if (response.ok) {
-                    localStorage.setItem("authToken", data.access_token);
-                    console.log("Login successful!");
-                    this.$router.push("/dashboard"); // Redirect to dashboard
+                    localStorage.setItem("authToken", data.token); // Save token to localStorage
+                    this.$router.push("/dashboard");
                 } else {
                     console.log("Invalid credentials: " + (data.message || "Please try again."));
                 }
