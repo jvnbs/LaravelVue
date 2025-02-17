@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import toastr from 'toastr';
 
 // Import Vue components
 import Home from './pages/Home.vue';
@@ -56,7 +57,8 @@ const routes = [
             { path: 'favorites', name: 'Favorite', component: Favorite },
             { path: 'settings', name: 'Settings', component: Setting },
             { path: 'security', name: 'Security', component: Security },
-        ]
+        ],
+        meta: { requiresAuth: true } 
     },
 
     // Tickets with nested routes
@@ -77,5 +79,29 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 });
+
+router.beforeEach((to, from, next) => {
+    const authToken = localStorage.getItem("authToken");
+
+    // If the route requires authentication
+    if (to.meta.requiresAuth) {
+        if (authToken) {
+            // User is authenticated, allow navigation
+            // toastr.info('Welcome to your dashboard!');
+            next();
+        } else {
+            // User is not authenticated, redirect to SignIn
+            toastr.warning('You must be logged in to access this page.');
+            next({ name: "SignIn" });
+        }
+    } else if (to.name === "SignIn" && authToken) {
+        // If already logged in, redirect to dashboard instead of sign-in page
+        next({ name: "Dashboard" });
+    } else {
+        // Allow navigation to other routes
+        next();
+    }
+});
+
 
 export default router;

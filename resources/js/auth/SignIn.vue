@@ -92,6 +92,9 @@
 
 
 <script>
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
+
 export default {
     data() {
         return {
@@ -119,9 +122,11 @@ export default {
                 
                 if (response.ok) {
                     localStorage.setItem("authToken", data.token); // Save token to localStorage
+                     toastr.success("Login successful!"); // Show success message
                     this.$router.push("/dashboard");
                 } else {
                     console.log("Invalid credentials: " + (data.message || "Please try again."));
+                      toastr.error("Invalid username or password."); // Show error message
                 }
             } catch (error) {
                 console.error("Error:", error);

@@ -17,7 +17,12 @@
       <link rel="stylesheet" href="{{ asset('front/css/listing_style.css') }}">
       <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
+<link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script>
+
       @vite('resources/js/app.js')
+
+
 </head>
 
 <body class="index-templete">

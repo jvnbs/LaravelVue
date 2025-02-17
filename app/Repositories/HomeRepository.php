@@ -7,6 +7,8 @@ use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Faq;
 use App\Models\Product;
+use App\Models\Service;
+use App\Models\Software;
 
 class HomeRepository implements HomeRepositoryInterface
 {
@@ -55,5 +57,17 @@ class HomeRepository implements HomeRepositoryInterface
     public function products()
     {
         return Product::all();
+    }
+
+    public function services()
+    {
+        $data = Service::with('subServices')->get();
+        return $data;
+    }
+
+    public function softwares()
+    {
+        $data = Software::with('subSoftwares')->get();
+        return $data;
     }
 }

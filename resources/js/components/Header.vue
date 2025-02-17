@@ -9,6 +9,7 @@
         <span class="navbar-togglerIcon"></span>
         <span class="navbar-togglerIcon"></span>
       </button>
+
       <div class="collapse navbar-collapse" :class="{ show: isNavbarOpen }" id="main-nav">
         <ul class="navbar-nav">
           <li v-for="(menu, index) in menuItems" :key="index" class="nav-item sub-menu">
@@ -43,112 +44,71 @@
           </li>
         </ul>
       </div>
+
       <div class="right-buttons d-flex">
-        <router-link to="/sign-in" class="btn">Log In</router-link>
+        <router-link v-if="!isLoggedIn" to="/sign-in" class="btn">Login</router-link>
+        <a v-if="isLoggedIn" href="#" @click.prevent="handleLogout" class="btn">Logout</a>
+        <router-link v-if="isLoggedIn" to="/dashboard" class="btn">Dashboard</router-link>
         <router-link to="/get-listing" class="btn get_listing">Get Listed</router-link>
       </div>
     </div>
   </nav>
 </template>
 
-<script setup>
-import { ref } from "vue";
 
-const isNavbarOpen = ref(false);
-const activeMenu = ref(null);
 
-const toggleNavbar = () => {
-  isNavbarOpen.value = !isNavbarOpen.value;
-};
+<script>
+import { useRouter } from 'vue-router';
+import Loader from '../components/Loader.vue';
 
-const toggleMenu = (index) => {
-  activeMenu.value = activeMenu.value === index ? null : index;
-};
-
-const menuItems = ref([
-  {
-    title: "Find Services",
-    submenu: [
-      {
-        title: "Software Development",
-        items: [
-          { name: "Custom Software Developers", link: "/services/software-development" },
-          { name: "Blockchain Development", link: "/services/blockchain" },
-          { name: "Java Development", link: "/services/java" },
-        ],
-      },
-      {
-        title: "Web & App Development",
-        items: [
-          { name: "Mobile App Development", link: "/services/mobile-app" },
-          { name: "Web Development", link: "/services/web-development" },
-        ],
-      },
-      {
-        title: "Design",
-        items: [
-          { name: "Mobile App Development", link: "/services/mobile-app" },
-          { name: "Web Development", link: "/services/web-development" },
-        ],
-      },
-       {
-        title: "Marketing Advertising",
-        items: [
-          { name: "Mobile App Development", link: "/services/mobile-app" },
-          { name: "Web Development", link: "/services/web-development" },
-        ],
-      },
-       {
-        title: "Latest Tech",
-        items: [
-          { name: "Mobile App Development", link: "/services/mobile-app" },
-          { name: "Web Development", link: "/services/web-development" },
-        ],
-      },
-
-       {
-        title: "Business & IT Services",
-        items: [
-          { name: "Cloud Computing", link: "/services/cloud-computing" },
-          { name: "DevOps & Automation", link: "/services/devops" },
-          { name: "Big Data & Analytics", link: "/services/big-data" },
-          { name: "IoT Development", link: "/services/iot" },
-        ],
-      },
-      {
-        title: "Browse all categories",
-        items: [
-          { name: "Cloud Computing", link: "/services/cloud-computing" },
-          { name: "DevOps & Automation", link: "/services/devops" },
-          { name: "Big Data & Analytics", link: "/services/big-data" },
-          { name: "IoT Development", link: "/services/iot" },
-        ],
-      },
-
-    ],
+export default {
+  data() {
+    return {
+      isLoggedIn: !!localStorage.getItem("authToken"), 
+      isNavbarOpen: false,
+      activeMenu: null,
+      services: [], // Store fetched services
+    };
   },
-  {
-    title: "Find Software",
-    submenu: [
-      {title: "Accounting Software"},
-      {title: "App Development Software"},
-      { title: "CRM Software",
-       items: [
-        { name: "CRM Software", link: "/software/crm" }
-        ]
-      },
-      {
-        title: "E-Commerce Software",
-        items: [
-          { name: "E-Commerce Software", link: "/software/e-commerce" }
-          ],
-      },
-      {title: "ERP Software"},
-      {title: "HR Software"},
-      {title: "Help Desk Software"},
-      {title: "Inventory Management Software"},
-      {title: "Browse all software"},
-    ],
+  methods: {
+    toggleNavbar() {
+      this.isNavbarOpen = !this.isNavbarOpen;
+    },
+    toggleMenu(index) {
+      this.activeMenu = this.activeMenu === index ? null : index;
+    },
+    handleLogout() {
+      localStorage.removeItem("authToken"); // Remove token from localStorage
+      this.isLoggedIn = false; // Update login state
+      this.$router.push("/sign-in"); // Redirect to sign-in page
+    },
+    async fetchServices() {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/services", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Fetched services:', result.data);
+
+        this.services = result.data; // Assign the fetched services to the `services` array
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    },
   },
-]);
+  mounted() {
+    this.fetchServices(); // Fetch services on component mount
+    this.isLoggedIn = localStorage.getItem("authToken") !== null; // Update the login state on page load
+  },
+};
 </script>
+
+

@@ -14,4 +14,7 @@ interface HomeRepositoryInterface
     public function categories();
 
     public function products();
+    public function services();
+    public function softwares();
+    
 }

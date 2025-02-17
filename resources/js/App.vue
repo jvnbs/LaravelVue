@@ -14,6 +14,9 @@
 </template>
 
 <script setup>
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
+
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 </script>

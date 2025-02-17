@@ -116,4 +116,37 @@ class HomeController extends Controller
     }
 
 
+
+    public function services()
+    {
+        $data = $this->HomeRepositoryInterface->services();
+
+        if ($data->isEmpty()) {
+            return ApiResponseClass::sendResponse([], 'No blog found', 404);
+        }
+
+        return ApiResponseClass::sendResponse(
+            ModelResource::collection($data),
+            'Service retrieved successfully',
+            200,
+        );
+    }
+
+
+    public function softwares()
+    {
+        $data = $this->HomeRepositoryInterface->softwares();
+
+        if ($data->isEmpty()) {
+            return ApiResponseClass::sendResponse([], 'No blog found', 404);
+        }
+
+        return ApiResponseClass::sendResponse(
+            ModelResource::collection($data),
+            'Software retrieved successfully',
+            200,
+        );
+    }
+
+
 }

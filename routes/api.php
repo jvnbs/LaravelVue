@@ -21,6 +21,8 @@ Route::get('/categories', [HomeController::class, 'categories']);
 Route::get('/faqs', [HomeController::class, 'faqs']);
 Route::get('/products', [HomeController::class, 'products']);
 Route::get('/news', [HomeController::class, 'news']);
+Route::get('/services', [HomeController::class, 'services']);
+Route::get('/softwares', [HomeController::class, 'softwares']);
 
 Route::middleware('AuthApi')->group(function () {
     Route::get('/blogs', [HomeController::class, 'blogs']);
