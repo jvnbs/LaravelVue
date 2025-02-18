@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import toastr from 'toastr';
-
+import { useAuthStore } from './stores/auth';
+import { useHomeStore } from './stores/home';
+ 
 // Import Vue components
 import Home from './pages/Home.vue';
 import About from './pages/About.vue';
@@ -80,28 +82,18 @@ const router = createRouter({
     routes
 });
 
-router.beforeEach((to, from, next) => {
-    const authToken = localStorage.getItem("authToken");
 
-    // If the route requires authentication
-    if (to.meta.requiresAuth) {
-        if (authToken) {
-            // User is authenticated, allow navigation
-            // toastr.info('Welcome to your dashboard!');
-            next();
-        } else {
-            // User is not authenticated, redirect to SignIn
-            toastr.warning('You must be logged in to access this page.');
-            next({ name: "SignIn" });
-        }
-    } else if (to.name === "SignIn" && authToken) {
-        // If already logged in, redirect to dashboard instead of sign-in page
-        next({ name: "Dashboard" });
+router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore();
+
+    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+        toastr.warning("You must be logged in to access this page.");
+        next({ name: "SignIn" });
     } else {
-        // Allow navigation to other routes
         next();
     }
 });
+
 
 
 export default router;

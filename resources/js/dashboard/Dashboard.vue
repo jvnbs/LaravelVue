@@ -15,4 +15,22 @@
   </div>
 </template>
 
-<script setup></script>
+
+<script>
+import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
+
+export default {
+    setup() {
+        const authStore = useAuthStore();
+        const router = useRouter();
+
+        const handleLogout = () => {
+            authStore.logout();
+            router.push("/sign-in");
+        };
+
+        return { handleLogout };
+    }
+};
+</script>

@@ -54,3 +54,52 @@
         </div>
     </div>
 </template>
+
+
+
+<script>
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
+
+
+export default {
+    data() {
+        return {
+            email: "",
+            password: "",
+        };
+    },
+    methods: {
+        async signIn() {
+            try {
+                const response = await fetch("http://127.0.0.1:8000/api/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: this.email,
+                        password: this.password,
+                    }),
+                    credentials: "include", // Ensure backend allows credentials
+                });
+
+                const data = await response.json();
+                
+                
+                if (response.ok) {
+                    localStorage.setItem("authToken", data.token); // Save token to localStorage
+                     toastr.success("Login successful!"); // Show success message
+                    this.$router.push("/dashboard");
+                } else {
+                    console.log("Invalid credentials: " + (data.message || "Please try again."));
+                      toastr.error("Invalid username or password."); // Show error message
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                console.log("Server error. Please try again later.");
+            }
+        },
+    },
+};
+</script>
